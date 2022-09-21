@@ -26,8 +26,9 @@
 import VMap from "v-mapbox";
 import { reactive } from "vue";
 import mapboxgl, { Marker } from "mapbox-gl";
-
 import MapboxGeocoder from "@mapbox/mapbox-gl-geocoder";
+import MapboxDraw from "@mapbox/mapbox-gl-draw";
+import "@mapbox/mapbox-gl-draw/dist/mapbox-gl-draw.css";
 
 // export default {
 //   name: "App",
@@ -132,6 +133,108 @@ function mapMark(map) {
       "line-width": 3,
     },
   });
+
+  //Circle
+  map.addSource("ethnicity", {
+    type: "vector",
+    url: "mapbox://examples.8fgz4egr",
+  });
+  map.addLayer({
+    id: "population",
+    type: "circle",
+    source: "ethnicity",
+    "source-layer": "sf2010",
+    paint: {
+      // Make circles larger as the user zooms from z12 to z22.
+      "circle-radius": {
+        base: 1.75,
+        stops: [
+          [12, 2],
+          [22, 180],
+        ],
+      },
+      // Color circles by ethnicity, using a `match` expression.
+      "circle-color": [
+        "match",
+        ["get", "ethnicity"],
+        "White",
+        "#FBB03B",
+        "Black",
+        "#223B53",
+        "Hispanic",
+        "#E55E5E",
+        "Asian",
+        "#3BB2D0",
+        /* other */ "#ccc",
+      ],
+    },
+  });
+
+  //LIne
+  map.addSource("route", {
+    type: "geojson",
+    data: {
+      type: "Feature",
+      properties: {},
+      geometry: {
+        type: "LineString",
+        coordinates: [
+          [73.68942260742188, 18.530398219358684],
+          [73.65509033203125, 18.340187242207897],
+          [73.99154663085938, 18.359739156553683],
+          [73.99429321289062, 18.641040231399984],
+          [73.68942260742188, 18.530398219358684],
+        ],
+      },
+    },
+  });
+  map.addLayer({
+    id: "route",
+    type: "line",
+    source: "route",
+    layout: {
+      "line-join": "round",
+      "line-cap": "round",
+    },
+    paint: {
+      "line-color": "#888",
+      "line-width": 8,
+    },
+  });
+  var Draw = new MapboxDraw();
+  map.addControl(Draw, "top-left");
+
+  //DrawTool
+  //   const draw = new MapboxDraw({
+  //     displayControlsDefault: false,
+  //     // Select which mapbox-gl-draw control buttons to add to the map.
+  //     controls: {
+  //       polygon: true,
+  //       trash: true,
+  //     },
+  //     // Set mapbox-gl-draw to draw by default.
+  //     // The user does not have to click the polygon control button first.
+  //     defaultMode: "draw_polygon",
+  //   });
+  //   map.addControl(draw);
+
+  //   map.on("draw.create", updateArea);
+  //   map.on("draw.delete", updateArea);
+  //   map.on("draw.update", updateArea);
+
+  //   function updateArea(e) {
+  //     const data = draw.getAll();
+  //     const answer = document.getElementById("calculated-area");
+  //     if (data.features.length > 0) {
+  //       const area = turf.area(data);
+  //       // Restrict the area to 2 decimal points.
+  //       const rounded_area = Math.round(area * 100) / 100;
+  //       answer.innerHTML = `<p><strong>${rounded_area}</strong></p><p>square meters</p>`;
+  //     } else {
+  //       answer.innerHTML = "";
+  //       if (e.type !== "draw.delete") alert("Click the map to draw a polygon.");
+  //     }
+  //   }
 }
 
 // map.on("load", () => {
@@ -198,5 +301,22 @@ body {
   left: 18px;
   z-index: 1;
   color: black;
+}
+
+.calculation-box {
+  height: 75px;
+  width: 150px;
+  position: absolute;
+  bottom: 40px;
+  left: 10px;
+  background-color: rgba(255, 255, 255, 0.9);
+  padding: 15px;
+  text-align: center;
+}
+
+p {
+  font-family: "Open Sans";
+  margin: 0;
+  font-size: 13px;
 }
 </style>
