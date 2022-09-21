@@ -111,7 +111,6 @@ function mapMark(map) {
     },
   });
 
-  //Polygon
   map.addLayer({
     id: "maine",
     type: "fill",
@@ -123,26 +122,6 @@ function mapMark(map) {
     },
   });
 
-  //Line
-  map.addSource("maine", {
-    type: "geojson",
-    data: {
-      type: "Feature",
-      properties: {},
-      geometry: {
-        type: "Polygon",
-        coordinates: [
-          [
-            [-108.977199, 40.975108],
-            [-102.105019, 40.995138],
-            [-102.078486, 37.017605],
-            [-109.083333, 37.017605],
-            [-108.977199, 40.975108],
-          ],
-        ],
-      },
-    },
-  });
   map.addLayer({
     id: "outline",
     type: "line",
@@ -151,91 +130,6 @@ function mapMark(map) {
     paint: {
       "line-color": "#000",
       "line-width": 3,
-    },
-  });
-
-  //Circle
-
-  map.addSource("ethnicity", {
-    type: "vector",
-    url: "mapbox://examples.8fgz4egr",
-  });
-  map.addLayer({
-    id: "population",
-    type: "circle",
-    source: "ethnicity",
-    "source-layer": "sf2010",
-    paint: {
-      // Make circles larger as the user zooms from z12 to z22.
-      "circle-radius": {
-        base: 1.75,
-        stops: [
-          [12, 2],
-          [22, 180],
-        ],
-      },
-      // Color circles by ethnicity, using a `match` expression.
-      "circle-color": [
-        "match",
-        ["get", "ethnicity"],
-        "White",
-        "#fbb03b",
-        "Black",
-        "#223b53",
-        "Hispanic",
-        "#e55e5e",
-        "Asian",
-        "#3bb2d0",
-        /* other */ "#ccc",
-      ],
-    },
-  });
-
-  //LIne
-  map.addSource("route", {
-    type: "geojson",
-    data: {
-      type: "Feature",
-      properties: {},
-      geometry: {
-        type: "LineString",
-        coordinates: [
-          [-122.483696, 37.833818],
-          [-122.483482, 37.833174],
-          [-122.483396, 37.8327],
-          [-122.483568, 37.832056],
-          [-122.48404, 37.831141],
-          [-122.48404, 37.830497],
-          [-122.483482, 37.82992],
-          [-122.483568, 37.829548],
-          [-122.48507, 37.829446],
-          [-122.4861, 37.828802],
-          [-122.486958, 37.82931],
-          [-122.487001, 37.830802],
-          [-122.487516, 37.831683],
-          [-122.488031, 37.832158],
-          [-122.488889, 37.832971],
-          [-122.489876, 37.832632],
-          [-122.490434, 37.832937],
-          [-122.49125, 37.832429],
-          [-122.491636, 37.832564],
-          [-122.492237, 37.833378],
-          [-122.493782, 37.833683],
-        ],
-      },
-    },
-  });
-  map.addLayer({
-    id: "route",
-    type: "line",
-    source: "route",
-    layout: {
-      "line-join": "round",
-      "line-cap": "round",
-    },
-    paint: {
-      "line-color": "#888",
-      "line-width": 8,
     },
   });
 }
@@ -304,12 +198,5 @@ body {
   left: 18px;
   z-index: 1;
   color: black;
-}
-
-#search {
-  position: fixed;
-  top: 35px;
-  left: 20px;
-  z-index: 1;
 }
 </style>
