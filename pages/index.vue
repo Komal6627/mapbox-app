@@ -26,8 +26,9 @@
 import VMap from "v-mapbox";
 import { reactive } from "vue";
 import mapboxgl, { Marker } from "mapbox-gl";
-
 import MapboxGeocoder from "@mapbox/mapbox-gl-geocoder";
+import MapboxDraw from "@mapbox/mapbox-gl-draw";
+import "@mapbox/mapbox-gl-draw/dist/mapbox-gl-draw.css";
 
 // export default {
 //   name: "App",
@@ -111,7 +112,6 @@ function mapMark(map) {
     },
   });
 
-  //Polygon
   map.addLayer({
     id: "maine",
     type: "fill",
@@ -123,26 +123,6 @@ function mapMark(map) {
     },
   });
 
-  //Line
-  map.addSource("maine", {
-    type: "geojson",
-    data: {
-      type: "Feature",
-      properties: {},
-      geometry: {
-        type: "Polygon",
-        coordinates: [
-          [
-            [-108.977199, 40.975108],
-            [-102.105019, 40.995138],
-            [-102.078486, 37.017605],
-            [-109.083333, 37.017605],
-            [-108.977199, 40.975108],
-          ],
-        ],
-      },
-    },
-  });
   map.addLayer({
     id: "outline",
     type: "line",
@@ -155,7 +135,6 @@ function mapMark(map) {
   });
 
   //Circle
-
   map.addSource("ethnicity", {
     type: "vector",
     url: "mapbox://examples.8fgz4egr",
@@ -179,13 +158,13 @@ function mapMark(map) {
         "match",
         ["get", "ethnicity"],
         "White",
-        "#fbb03b",
+        "#FBB03B",
         "Black",
-        "#223b53",
+        "#223B53",
         "Hispanic",
-        "#e55e5e",
+        "#E55E5E",
         "Asian",
-        "#3bb2d0",
+        "#3BB2D0",
         /* other */ "#ccc",
       ],
     },
@@ -200,27 +179,11 @@ function mapMark(map) {
       geometry: {
         type: "LineString",
         coordinates: [
-          [-122.483696, 37.833818],
-          [-122.483482, 37.833174],
-          [-122.483396, 37.8327],
-          [-122.483568, 37.832056],
-          [-122.48404, 37.831141],
-          [-122.48404, 37.830497],
-          [-122.483482, 37.82992],
-          [-122.483568, 37.829548],
-          [-122.48507, 37.829446],
-          [-122.4861, 37.828802],
-          [-122.486958, 37.82931],
-          [-122.487001, 37.830802],
-          [-122.487516, 37.831683],
-          [-122.488031, 37.832158],
-          [-122.488889, 37.832971],
-          [-122.489876, 37.832632],
-          [-122.490434, 37.832937],
-          [-122.49125, 37.832429],
-          [-122.491636, 37.832564],
-          [-122.492237, 37.833378],
-          [-122.493782, 37.833683],
+          [73.68942260742188, 18.530398219358684],
+          [73.65509033203125, 18.340187242207897],
+          [73.99154663085938, 18.359739156553683],
+          [73.99429321289062, 18.641040231399984],
+          [73.68942260742188, 18.530398219358684],
         ],
       },
     },
@@ -238,6 +201,40 @@ function mapMark(map) {
       "line-width": 8,
     },
   });
+  var Draw = new MapboxDraw();
+  map.addControl(Draw, "top-left");
+
+  //DrawTool
+  //   const draw = new MapboxDraw({
+  //     displayControlsDefault: false,
+  //     // Select which mapbox-gl-draw control buttons to add to the map.
+  //     controls: {
+  //       polygon: true,
+  //       trash: true,
+  //     },
+  //     // Set mapbox-gl-draw to draw by default.
+  //     // The user does not have to click the polygon control button first.
+  //     defaultMode: "draw_polygon",
+  //   });
+  //   map.addControl(draw);
+
+  //   map.on("draw.create", updateArea);
+  //   map.on("draw.delete", updateArea);
+  //   map.on("draw.update", updateArea);
+
+  //   function updateArea(e) {
+  //     const data = draw.getAll();
+  //     const answer = document.getElementById("calculated-area");
+  //     if (data.features.length > 0) {
+  //       const area = turf.area(data);
+  //       // Restrict the area to 2 decimal points.
+  //       const rounded_area = Math.round(area * 100) / 100;
+  //       answer.innerHTML = `<p><strong>${rounded_area}</strong></p><p>square meters</p>`;
+  //     } else {
+  //       answer.innerHTML = "";
+  //       if (e.type !== "draw.delete") alert("Click the map to draw a polygon.");
+  //     }
+  //   }
 }
 
 // map.on("load", () => {
@@ -306,10 +303,20 @@ body {
   color: black;
 }
 
-#search {
-  position: fixed;
-  top: 35px;
-  left: 20px;
-  z-index: 1;
+.calculation-box {
+  height: 75px;
+  width: 150px;
+  position: absolute;
+  bottom: 40px;
+  left: 10px;
+  background-color: rgba(255, 255, 255, 0.9);
+  padding: 15px;
+  text-align: center;
+}
+
+p {
+  font-family: "Open Sans";
+  margin: 0;
+  font-size: 13px;
 }
 </style>
