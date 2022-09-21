@@ -171,36 +171,37 @@ function mapMark(map) {
   });
 
   //LIne
-  map.addSource("route", {
-    type: "geojson",
-    data: {
-      type: "Feature",
-      properties: {},
-      geometry: {
-        type: "LineString",
-        coordinates: [
-          [73.68942260742188, 18.530398219358684],
-          [73.65509033203125, 18.340187242207897],
-          [73.99154663085938, 18.359739156553683],
-          [73.99429321289062, 18.641040231399984],
-          [73.68942260742188, 18.530398219358684],
-        ],
-      },
-    },
-  });
-  map.addLayer({
-    id: "route",
-    type: "line",
-    source: "route",
-    layout: {
-      "line-join": "round",
-      "line-cap": "round",
-    },
-    paint: {
-      "line-color": "#888",
-      "line-width": 8,
-    },
-  });
+  // map.addSource("route", {
+  //   type: "geojson",
+  //   data: {
+  //     type: "Feature",
+  //     properties: {},
+  //     geometry: {
+  //       type: "LineString",
+  //       coordinates: [
+  //         [73.68942260742188, 18.530398219358684],
+  //         [73.65509033203125, 18.340187242207897],
+  //         [73.99154663085938, 18.359739156553683],
+  //         [73.99429321289062, 18.641040231399984],
+  //         [73.68942260742188, 18.530398219358684],
+  //       ],
+  //     },
+  //   },
+  // });
+  // map.addLayer({
+  //   id: "route",
+  //   type: "line",
+  //   source: "route",
+  //   layout: {
+  //     "line-join": "round",
+  //     "line-cap": "round",
+  //   },
+  //   paint: {
+  //     "line-color": "#888",
+  //     "line-width": 8,
+  //   },
+  // });
+
   var Draw = new MapboxDraw();
   map.addControl(Draw, "top-left");
 
@@ -290,7 +291,7 @@ body {
   padding: 1px;
   position: fixed;
   top: 25px;
-  left: 30px;
+  left: 50px;
   z-index: 1;
   margin: 1px;
 }
@@ -298,7 +299,7 @@ body {
 #choose {
   position: fixed;
   top: 5px;
-  left: 18px;
+  left: 45px;
   z-index: 1;
   color: black;
 }

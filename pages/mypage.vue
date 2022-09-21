@@ -55,6 +55,9 @@ const state = reactive({
     minPitch: 0,
     maxPitch: 60,
   } as mapboxgl.MapboxOptions,
+  // select: true,
+  // items: [],
+  // id: "",
 });
 
 function mapMark(map) {
@@ -249,6 +252,31 @@ function getRandomColor() {
   }
   return color;
 }
+
+let mapData: any = await $fetch("http://localhost:3001/mapdata");
+console.log("map data", mapData);
+
+mapData.map((ele) => {
+  //   new mapboxgl.Marker({
+  //     draggable: true,
+  //     color: "#" + (Math.random().toString(16) + "000000").substring(2, 8),
+  //   })
+  //     .setLngLat([ele.lat, ele.lon])
+  //     .addTo(map);
+  //---------------------------------------------------------------------
+  // new mapboxgl.Marker({
+  //   draggable: true,
+  //   color: getRandomColor(),
+  // })
+  //   .setLngLat([ele.longitude, ele.latitude])
+  //   .addTo(map);
+});
+
+// getMapData();
+// GET API
+// async function getMapData() {
+//   state.items = await $fetch("http://localhost:3001/mapdata");
+// }
 </script>
 
 <style>
