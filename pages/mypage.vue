@@ -25,7 +25,7 @@
 <script setup lang="ts">
 import VMap from "v-mapbox";
 import { reactive } from "vue";
-import mapboxgl, { Marker } from "mapbox-gl";
+import mapboxgl, { Map, Marker } from "mapbox-gl";
 import MapboxGeocoder from "@mapbox/mapbox-gl-geocoder";
 import MapboxDraw from "@mapbox/mapbox-gl-draw";
 import "@mapbox/mapbox-gl-draw/dist/mapbox-gl-draw.css";
@@ -59,6 +59,9 @@ const state = reactive({
   // items: [],
   // id: "",
 });
+
+let mapData: any = await $fetch("http://localhost:3001/mapdata");
+console.log("map data", mapData);
 
 function mapMark(map) {
   map.on("click", (e) => {
@@ -204,45 +207,19 @@ function mapMark(map) {
       "line-width": 8,
     },
   });
+
   var Draw = new MapboxDraw();
   map.addControl(Draw, "top-left");
 
-  //DrawTool
-  //   const draw = new MapboxDraw({
-  //     displayControlsDefault: false,
-  //     // Select which mapbox-gl-draw control buttons to add to the map.
-  //     controls: {
-  //       polygon: true,
-  //       trash: true,
-  //     },
-  //     // Set mapbox-gl-draw to draw by default.
-  //     // The user does not have to click the polygon control button first.
-  //     defaultMode: "draw_polygon",
-  //   });
-  //   map.addControl(draw);
-
-  //   map.on("draw.create", updateArea);
-  //   map.on("draw.delete", updateArea);
-  //   map.on("draw.update", updateArea);
-
-  //   function updateArea(e) {
-  //     const data = draw.getAll();
-  //     const answer = document.getElementById("calculated-area");
-  //     if (data.features.length > 0) {
-  //       const area = turf.area(data);
-  //       // Restrict the area to 2 decimal points.
-  //       const rounded_area = Math.round(area * 100) / 100;
-  //       answer.innerHTML = `<p><strong>${rounded_area}</strong></p><p>square meters</p>`;
-  //     } else {
-  //       answer.innerHTML = "";
-  //       if (e.type !== "draw.delete") alert("Click the map to draw a polygon.");
-  //     }
-  //   }
+  mapData.forEach((element) => {
+    new mapboxgl.Marker({
+      color: getRandomColor(),
+      draggable: "false",
+    })
+      .setLngLat([element.latitude, element.longitude])
+      .addTo(map);
+  });
 }
-
-// map.on("load", () => {
-//   console.log("loading");
-// });
 
 function getRandomColor() {
   var letters = "0123456789ABCDEF";
@@ -253,30 +230,9 @@ function getRandomColor() {
   return color;
 }
 
-let mapData: any = await $fetch("http://localhost:3001/mapdata");
-console.log("map data", mapData);
-
-mapData.map((ele) => {
-  //   new mapboxgl.Marker({
-  //     draggable: true,
-  //     color: "#" + (Math.random().toString(16) + "000000").substring(2, 8),
-  //   })
-  //     .setLngLat([ele.lat, ele.lon])
-  //     .addTo(map);
-  //---------------------------------------------------------------------
-  // new mapboxgl.Marker({
-  //   draggable: true,
-  //   color: getRandomColor(),
-  // })
-  //   .setLngLat([ele.longitude, ele.latitude])
-  //   .addTo(map);
-});
-
-// getMapData();
-// GET API
-// async function getMapData() {
-//   state.items = await $fetch("http://localhost:3001/mapdata");
-// }
+// map.on("load", () => {
+//   console.log("loading");
+// });
 </script>
 
 <style>
